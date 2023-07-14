@@ -1,0 +1,120 @@
+                <div class="col-md-6">
+                  <label for="inputCity" class="form-label">City</label>
+                  <input type="text" class="form-control" id="inputCity">
+                </div>
+                <div class="col-md-4">
+                  <label for="inputState" class="form-label">State</label>
+                  <select id="inputState" class="form-select">
+                    <option selected>Choose...</option>
+                    <option>...</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label for="inputZip" class="form-label">Zip</label>
+                  <input type="text" class="form-control" id="inputZip">
+                </div>
+
+<?= $this->extend('default') ?>
+
+<?= $this->section('content') ?>
+
+<?= $this->include('layout/header.php') ?>
+
+<?= $this->include('layout/sidebar.php'); ?>
+
+<?= $this->include('layout/topbar.php') ?>
+
+<!-- ======= batas ======= -->
+<main id="main" class="main">
+
+<div class="pagetitle">
+  <h1>Recording Ayam</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+      <li class="breadcrumb-item">Recording</li>
+      <li class="breadcrumb-item active">Kelola Recording</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+  <div class="row">
+    <div class="">
+
+<!--batas-->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Daftar Kandang Ayam</h5>
+          <p>Silahkan pilih kandang ayam yang ingin dikelola. <br>Berikut adalah seluruh data Kandang Ayam.</p>
+
+          <form id="form" action="<?=base_url()?>/recording/recording" method="POST" >
+                
+                <div class="col-md-6">
+                  <label for="inputState" class="form-label">Kandang</label>
+                  <select name="id_kandang" id="id_kandang" class="form-select">
+                    <option selected>--Pilih Kandang--</option>
+                    <?php foreach($kandangg as $k) : ?>
+                    <option value="<?= $k['id_kandang']?>"><?=$k['nama_k']?></option>
+                    <?php endforeach?>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="inputState" class="form-label">Periode</label>
+                  <select name="id_periode" id="id_periode" class="form-select">
+                    
+                  </select>
+                </div><br>
+
+            <div class="col md-6">
+              <div class="col-md-6">
+                <button type="submit"  onclick="submitForm()" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+
+          </form><!-- End General Form Elements -->
+
+          <script>
+            $(document).ready(function() {
+                $('#id_kandang').change(function() {
+                    var id_kandang = $("#id_kandang").val();
+                    $.ajax({
+                    url: '<?=base_url('periode/periode') ?>', // Ganti dengan URL yang sesuai ke controller dan method yang akan memuat data tambahan
+                    type: 'POST',
+                    data: { id_kandang: id_kandang },
+                    success: function(response) {
+                        $('#id_periode').html(response); // Memuat data tambahan ke elemen dengan ID 'sub-data'
+                    }
+                    });
+                });
+            });
+
+            function submitForm() {
+                var data = $('#id_periode').val(); // Mengambil nilai input
+                $.ajax({
+                    url: $('#form').attr('action'),
+                    type: 'POST',
+                    data: { id_periode: id_periode },
+                    success: function(response) {
+                    // Lakukan sesuatu setelah permintaan berhasil
+                    }
+                });
+            }
+
+
+          </script>
+        </div>
+      </div>
+<!--batas-->
+
+    </div>
+  </div>
+</section>
+
+</main><!-- End #main -->
+<!-- ======= batas ======= -->
+
+<?= $this->include('layout/footer2.php') ?>
+
+<?= $this->endSection() ?>
